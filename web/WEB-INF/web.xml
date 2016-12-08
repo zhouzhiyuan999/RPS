@@ -13,6 +13,6 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>work/user/login/login.html</welcome-file>
     </welcome-file-list>
 </web-app>
