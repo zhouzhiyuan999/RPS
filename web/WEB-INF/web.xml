@@ -9,10 +9,19 @@
     </filter>
     <filter-mapping>
         <filter-name>struts2</filter-name>
-        <url-pattern>/action/*</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>
         <welcome-file>work/user/login/login.html</welcome-file>
     </welcome-file-list>
+
+    <servlet>
+        <servlet-name>login.do</servlet-name>
+        <servlet-class>com.user.Controller.userLoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>login.do</servlet-name>
+        <url-pattern>/login.do</url-pattern>
+    </servlet-mapping>
 </web-app>
