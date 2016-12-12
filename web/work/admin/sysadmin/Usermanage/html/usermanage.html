@@ -1,0 +1,115 @@
+<!-- Page Heading -->
+    <!-- 首页 用户管理页面 左侧为用户部门树 右侧点击用户时显示用户信息，点击部门时显示部门信息-->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                用户管理 <small>User Management </small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row" style="min-height: 750px;">
+        <div class="col-lg-4"  style="height: 100%;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        用户-部门结构图
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="tree well">
+                        <ul>
+                            <li>
+                                <span><i class="glyphicon glyphicon-home"></i> 顶级节点1</span> <a href="">Goes somewhere</a>
+                                <ul>
+                                    <li>
+                                        <span><i class="glyphicon glyphicon-minus-sign"></i> 一级节点1</span> <a href=""></a>
+                                        <ul>
+                                            <li>
+                                                <span><i class="glyphicon glyphicon-leaf"></i> 二级节点1_1</span> <a href=""></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span><i class="glyphicon glyphicon-minus-sign"></i> 一级节点2</span> <a href=""></a>
+                                        <ul>
+                                            <li>
+                                                <span><i class="glyphicon glyphicon-minus-sign"></i> 二级节点2_2</span> <a href=""></a>
+                                                <ul>
+                                                    <li>
+                                                        <span><i class="glyphicon glyphicon-minus-sign"></i>三级节点2_1</span> <a href=""></a>
+                                                        <ul>
+                                                            <li>
+                                                                <span><i class="glyphicon glyphicon-leaf"></i>四级节点2_1</span> <a href=""></a>
+                                                            </li>
+                                                            <li>
+                                                                <span><i class="glyphicon glyphicon-leaf"></i> 四级节点2_2</span> <a href=""></a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8" style="height: 100%;">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        用户基本信息
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered" name="userinformtable">
+                        <tbody>
+                        <tr>
+                            <td class="col-lg-3"><strong>用户名</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=username%></td>
+                        </tr>
+                        <tr>
+                            <!-- 角色管理-->
+                            <td class="col-lg-3"><strong>权限</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=authority%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>邮箱</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=email%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>姓名</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=name%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>年龄</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=age%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>部门</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=department%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>联系电话</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=phonenumber%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>地址</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=address%></td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-3"><strong>邮编</strong></td>
+                            <td class="col-lg-5" contenteditable="false"><%=zipcode%></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-default col-lg-3 col-lg-offset-2" name="btnedit">编辑</button>
+                    <button type="button" class="btn btn-default col-lg-3 col-lg-offset-2" name="btnsave">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
