@@ -13,6 +13,7 @@
       <root url="jar://$PROJECT_DIR$/lib/asm-commons.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javassist.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/freemarker.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/struts2-json-plugin-2.3.8.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
