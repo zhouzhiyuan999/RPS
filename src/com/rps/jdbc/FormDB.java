@@ -2,29 +2,25 @@ package com.rps.jdbc;
 
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
-import org.bson.BSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.omg.CORBA.OBJ_ADAPTER;
-
-import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 /**
+ * ±íµ¥Ä£°åÀà <br>
  * Created by yinhao on 2016/12/8.
+ * @author yinhao
+ * @version 1.0
  */
 public class FormDB {
 
     final private static String COLNAME = "forms";
 
     /**
-     * æ·»åŠ è¡¨å•æ¨¡æ¿ï¼Œè‡ªåŠ¨æ·»åŠ æ—¥æœŸæ—¶é—´
-     * @param title æ ‡é¢˜
-     * @param desc æè¿°
+     * Ìí¼Ó±íµ¥Ä£°å£¬×Ô¶¯Ìí¼Ó´´½¨ºÍ¸üĞÂÈÕÆÚ
+     * @param title Ä£°å±êÌâ
+     * @param desc Ä£°åÃèÊö
      */
     public static void AddForm(String title, String desc){
         Document doc = new Document("title",title).append("desc",desc).append("items", new ArrayList()).append("created",new Date()).append("updated",new Date());
@@ -32,30 +28,30 @@ public class FormDB {
     }
 
     /**
-     * åˆ é™¤æŒ‡å®šæ¨¡æ¿
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @return
+     * É¾³ıÖ¸¶¨Ä£°å
+     * @param fid ±íµ¥Ä£°åid
+     * @return ±»É¾³ıµÄÄ£°åÊı£¬0»ò1
      */
-    public static DeleteResult DelForm(String fid){
-        return MongoUtil.deleteOne(COLNAME, Filters.eq("_id",new ObjectId(fid)));
+    public static long DelForm(String fid){
+        return MongoUtil.deleteOne(COLNAME, Filters.eq("_id",new ObjectId(fid))).getDeletedCount();
     }
 
     /**
-     * æ›´æ–°æŒ‡å®šæ¨¡æ¿æ ‡é¢˜å’Œæè¿°ï¼Œæ—¶é—´è‡ªåŠ¨æ›´æ–°
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param title æ ‡é¢˜
-     * @param desc æè¿°
-     * @return
+     * ¸üĞÂÖ¸¶¨Ä£°å±êÌâºÍÃèÊö£¬¸üĞÂÊ±¼ä×Ô¶¯¸üĞÂ
+     * @param fid ±íµ¥Ä£°åid
+     * @param title Ä£°å±êÌâ
+     * @param desc Ä£°åÃèÊö
+     * @return ±»ĞŞ¸ÄµÄÄ£°åÊı£¬0»ò1
      */
-    public static UpdateResult EditForm(String fid, String title, String desc) {
+    public static long EditForm(String fid, String title, String desc) {
         Document doc = new Document("title", title).append("desc", desc).append("updated", new Date());
-        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$set", doc);
+        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$set", doc).getModifiedCount();
     }
 
     /**
-     * è·å–æŒ‡å®šè¡¨å•çš„æ‰€æœ‰å†…å®¹
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @return
+     * »ñÈ¡Ö¸¶¨±íµ¥µÄËùÓĞÄÚÈİ
+     * @param fid ±íµ¥Ä£°åid
+     * @return ±íµ¥Ä£°å
      */
     public static Document GetForm(String fid){
         return MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(fid)));
@@ -63,52 +59,55 @@ public class FormDB {
 
 
     /**
-     * æŒ‡å®šè¡¨å•æ¨¡æ¿æ·»åŠ è¾“å…¥é¡¹
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param name æ˜¾ç¤ºçš„åç§°
-     * @param label å¯¹åº”æ•°æ®é›†åˆçš„key
-     * @param datatype æ•°æ®ç±»å‹ï¼Œtextã€listç­‰
-     * @param content é»˜è®¤å†…å®¹ï¼Œtextå¯¹åº”æç¤ºä¿¡æ¯ï¼Œlistå¯¹åº”åˆ—è¡¨é›†åˆ
-     * @param seq æ’åºå·
-     * @param isneed å¿…å¡«é¡¹æ ‡å¿—
-     * @return
+     * Ö¸¶¨±íµ¥Ä£°åÌí¼ÓÊäÈëÏî
+     * @param fid ±íµ¥Ä£°åid
+     * @param name ÏÔÊ¾µÄÃû³Æ
+     * @param label ¶ÔÓ¦Êı¾İ¼¯ºÏµÄkey
+     * @param datatype Êı¾İÀàĞÍ£¬text¡¢listµÈ
+     * @param content Ä¬ÈÏÄÚÈİ£¬text¶ÔÓ¦ÌáÊ¾ĞÅÏ¢£¬list¶ÔÓ¦ÁĞ±í¼¯ºÏ
+     * @param bind ÊÇ·ñ°ó¶¨Ä³¸ö±äÁ¿£¬$username¡¢$date¡¢$deptµÈµÈ
+     * @param seq ÅÅĞòºÅ
+     * @param isneed ±ØÌîÏî±êÖ¾
+     * @return ³É¹¦Ìí¼ÓµÄÊıÄ¿£¬0»ò1
      */
-    public static UpdateResult AddItem(String fid, String name, String label, String datatype, Object content, int seq, boolean isneed) {
-        Document doc = new Document("mid", new ObjectId()).append("name", name).append("label", label).append("datatype", datatype).append("content", content).append("seq", seq).append("isneed", isneed);
-        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$push", new Document("items", doc));
+    public static long AddItem(String fid, String name, String label, String datatype, Object content, String bind, int seq, boolean isneed) {
+        Document doc = new Document("mid", new ObjectId()).append("name", name).append("label", label).append("datatype", datatype).append("content", content).append("bind",bind).append("seq", seq).append("isneed", isneed);
+        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$push", new Document("items", doc)).getModifiedCount();
     }
 
     /**
-     * åˆ é™¤æŒ‡å®šæ¨¡æ¿çš„æŒ‡å®šé¡¹
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param mid è¾“å…¥é¡¹id
-     * @return
+     * É¾³ıÖ¸¶¨Ä£°åµÄÖ¸¶¨Ïî
+     * @param fid ±íµ¥Ä£°åid
+     * @param mid ÊäÈëÏîid
+     * @return ±»É¾³ıµÄÊıÄ¿£¬0»ò1
      */
-    public static UpdateResult DelItem(String fid, String mid){
-        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$pull", new Document("items", new Document("mid", new ObjectId(mid))));
+    public static long DelItem(String fid, String mid){
+        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(fid)), "$pull", new Document("items", new Document("mid", new ObjectId(mid)))).getModifiedCount();
     }
 
     /**
-     * æ›´æ–°è¾“å…¥é¡¹å†…å®¹
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param mid æŒ‡å®šè¾“å…¥é¡¹id
-     * @param name æ˜¾ç¤ºçš„åç§°
-     * @param label å¯¹åº”æ•°æ®é›†åˆçš„key
-     * @param datatype æ•°æ®ç±»å‹ï¼Œtextã€listç­‰
-     * @param content é»˜è®¤å†…å®¹ï¼Œtextå¯¹åº”æç¤ºä¿¡æ¯ï¼Œlistå¯¹åº”åˆ—è¡¨é›†åˆ
-     * @param seq æ’åºå·
-     * @param isneed å¿…å¡«é¡¹æ ‡å¿—
+     * ¸üĞÂÊäÈëÏîÄÚÈİ
+     * @param fid ±íµ¥Ä£°åid
+     * @param mid Ö¸¶¨ÊäÈëÏîid
+     * @param name ÏÔÊ¾µÄÃû³Æ
+     * @param label ¶ÔÓ¦Êı¾İ¼¯ºÏµÄkey
+     * @param datatype Êı¾İÀàĞÍ£¬text¡¢listµÈ
+     * @param content Ä¬ÈÏÄÚÈİ£¬text¶ÔÓ¦ÌáÊ¾ĞÅÏ¢£¬list¶ÔÓ¦ÁĞ±í¼¯ºÏ
+     * @param bind ÊÇ·ñ°ó¶¨Ä³¸ö±äÁ¿£¬$username¡¢$date¡¢$deptµÈµÈ
+     * @param seq ÅÅĞòºÅ
+     * @param isneed ±ØÌîÏî±êÖ¾
+     * @return ±»³É¹¦ĞŞ¸ÄµÄÊıÄ¿£¬0»ò1
      */
-    public static void EditItem(String fid, String mid, String name, String label, String datatype, Object content, int seq, boolean isneed){
-        Document doc = new Document("mid",new ObjectId(mid)).append("name",name).append("label", label).append("datatype",datatype).append("content",content).append("seq",seq).append("isneed",isneed);
-        MongoUtil.updateOne(COLNAME, Filters.and(Filters.eq("_id",new ObjectId(fid)),Filters.eq("items.mid",new ObjectId(mid))),"$set",new Document("items.$",doc));
+    public static long EditItem(String fid, String mid, String name, String label, String datatype, Object content, String bind, int seq, boolean isneed){
+        Document doc = new Document("mid",new ObjectId(mid)).append("name",name).append("label", label).append("datatype",datatype).append("content",content).append("bind",bind).append("seq", seq).append("isneed",isneed);
+        return MongoUtil.updateOne(COLNAME, Filters.and(Filters.eq("_id",new ObjectId(fid)),Filters.eq("items.mid",new ObjectId(mid))),"$set",new Document("items.$",doc)).getModifiedCount();
     }
 
     /**
-     * è·å–æŒ‡å®šè¾“å…¥é¡¹çš„æ–‡æ¡£å†…å®¹
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param mid æŒ‡å®šè¾“å…¥é¡¹id
-     * @return
+     * »ñÈ¡Ö¸¶¨ÊäÈëÏîµÄÎÄµµÄÚÈİ
+     * @param fid ±íµ¥Ä£°åid
+     * @param mid Ö¸¶¨ÊäÈëÏîid
+     * @return ÊäÈëÏîÊôĞÔ
      */
     public static Document GetItem(String fid, String mid){
         ArrayList<Document> list = (ArrayList<Document>) MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(fid))).get("items");
@@ -121,41 +120,29 @@ public class FormDB {
     }
 
     /**
-     * åˆ—å‡ºå½“å‰ç³»ç»Ÿçš„æ‰€æœ‰è¡¨å•æ¨¡æ¿
-     * @return
+     * »ñÈ¡Ä£°åµÄËùÓĞÊäÈëÏî
+     * @param fid ±íµ¥Ä£°åid
+     * @return ÊäÈëÏîÁĞ±í
+     */
+    public static ArrayList<Document> ListItems(String fid){
+        return (ArrayList<Document>)MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(fid))).get("items");
+    }
+
+    /**
+     * Çå¿Õ¸ÃÄ£°åµÄËùÓĞÊäÈëÏî
+     * @param fid ±íµ¥Ä£°åid
+     * @return ±»ĞŞ¸ÄµÄÊıÄ¿
+     */
+    public static long DropItems(String fid){
+        return MongoUtil.updateOne(COLNAME, Filters.eq("_id",new ObjectId(fid)),"$set",new Document("items",new ArrayList())).getModifiedCount();
+    }
+
+    /**
+     * ÁĞ³öµ±Ç°ÏµÍ³µÄËùÓĞ±íµ¥Ä£°å
+     * @return ËùÓĞÄ£°åµµ°¸
      */
     public static MongoCursor<Document> ListForms(){
         return MongoUtil.find(COLNAME, new Document());
     }
 
-    /**
-     * æµ‹è¯•å‡½æ•°
-     * @param args
-     */
-    public static void main(String[] args) {
-
-//        FormDB.AddForm("test","descrption");
-
-        String fid = "58490ef28ebe033690d152d6";
-        FormDB.AddItem(fid,"name","name","text","å§“å",1,true);
-        FormDB.AddItem(fid,"number","number","text","å­¦å·",2,true);
-        ArrayList<String> al = new ArrayList<String>();
-        al.add("man");al.add("woman");
-        FormDB.AddItem(fid, "sex", "sex", "list", al, 3, true);
-        FormDB.AddItem(fid,"note","note","text","å¤‡æ³¨",2,true);
-
-        MongoCursor<Document> mc = FormDB.ListForms();
-        while (mc.hasNext()){
-            System.out.println(mc.next());
-        }
-
-        FormDB.DelItem(fid,"5849102d8ebe0320c41fa71b");
-        FormDB.EditItem(fid,"5849102d8ebe0320c41fa717","nID","nID","text","å­¦å·",2,true);
-
-        mc = FormDB.ListForms();
-        while (mc.hasNext()){
-            System.out.println(mc.next());
-        }
-
-    }
 }

@@ -12,18 +12,21 @@ import javax.print.Doc;
 import java.util.Date;
 
 /**
+ * ÓÃ»§Æ¾Ö¤Êı¾İÀà <br/>
  * Created by yinhao on 2016/12/8.
+ * @author yinhao
+ * @version 1.0
  */
 public class DataDB {
 
     final private static String COLNAME = "data";
 
     /**
-     * æ·»åŠ å¯¹åº”è¡¨å•çš„æ–‡æ¡£
-     * @param fid è¡¨å•æ¨¡æ¿id
-     * @param uid ç”¨æˆ·id
-     * @param doc è¡¨å•å†…å®¹
-     * @param status å½“å‰æ–‡æ¡£çŠ¶æ€
+     * Ìí¼Ó¶ÔÓ¦±íµ¥µÄÎÄµµ
+     * @param fid ±íµ¥Ä£°åid
+     * @param uid ÓÃ»§id
+     * @param doc ±íµ¥ÄÚÈİ
+     * @param status µ±Ç°ÎÄµµ×´Ì¬
      */
     public static void AddData(String fid, String uid, Document doc, String status){
         Document newdoc = new Document("fid",new ObjectId(fid)).append("uid",new ObjectId(uid)).append("data",doc).append("status",status).append("created",new Date()).append("updated", new Date());
@@ -31,8 +34,8 @@ public class DataDB {
     }
 
     /**
-     * åˆ é™¤æŒ‡å®šæ–‡æ¡£æ•°æ®
-     * @param did æ–‡æ¡£æ•°æ®id
+     * É¾³ıÖ¸¶¨ÎÄµµÊı¾İ
+     * @param did ÎÄµµÊı¾İid
      * @return
      */
     public static DeleteResult DelData(String did){
@@ -40,10 +43,10 @@ public class DataDB {
     }
 
     /**
-     * æ›´æ–°è¡¨å•å†…å®¹
-     * @param did è¡¨å•æ¨¡æ¿id
-     * @param doc è¡¨å•æ•°æ®å†…å®¹æ–‡æ¡£
-     * @param status å½“å‰è¡¨å•å†…å®¹çŠ¶æ€
+     * ¸üĞÂ±íµ¥ÄÚÈİ
+     * @param did ±íµ¥Ä£°åid
+     * @param doc ±íµ¥Êı¾İÄÚÈİÎÄµµ
+     * @param status µ±Ç°±íµ¥ÄÚÈİ×´Ì¬
      * @return
      */
     public static UpdateResult EditData(String did, Document doc, String status){
@@ -51,8 +54,8 @@ public class DataDB {
     }
 
     /**
-     * è·å–æŒ‡å®šçš„ä¸€ä»½æ–‡æ¡£
-     * @param did æ–‡æ¡£æ•°æ®id
+     * »ñÈ¡Ö¸¶¨µÄÒ»·İÎÄµµ
+     * @param did ÎÄµµÊı¾İid
      * @return
      */
     public static Document GetData(String did){
@@ -60,8 +63,8 @@ public class DataDB {
     }
 
     /**
-     * è·å–æ¨¡æ¿çš„æ‰€æœ‰æ–‡æ¡£æ•°æ®
-     * @param fid è¡¨å•æ¨¡æ¿id
+     * »ñÈ¡Ä£°åµÄËùÓĞÎÄµµÊı¾İ
+     * @param fid ±íµ¥Ä£°åid
      * @return
      */
     public static MongoCursor<Document> GetDataByForm(String fid){
@@ -69,8 +72,8 @@ public class DataDB {
     }
 
     /**
-     * è·å–ç”¨æˆ·çš„æ‰€æœ‰æ–‡æ¡£æ•°æ®
-     * @param uid ç”¨æˆ·id
+     * »ñÈ¡ÓÃ»§µÄËùÓĞÎÄµµÊı¾İ
+     * @param uid ÓÃ»§id
      * @return
      */
     public static MongoCursor<Document> GetDataByUser(String uid){
@@ -78,7 +81,7 @@ public class DataDB {
     }
 
     /**
-     * è·å–ç³»ç»Ÿå†…çš„æ‰€æœ‰æ–‡æ¡£æ•°æ®
+     * »ñÈ¡ÏµÍ³ÄÚµÄËùÓĞÎÄµµÊı¾İ
      * @return
      */
     public static MongoCursor<Document> ListDatas(){
