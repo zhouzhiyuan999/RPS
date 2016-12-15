@@ -42,7 +42,9 @@
     <![endif]-->
     <script src="/work/third-party/common.js"></script>
     <script src="/work/third-party/template-native.js"></script>
-    <script src="js/sysadmin.js"></script>
+    <script src="/work/third-party/sea.js"></script>
+    <script src="sysadmin.js"></script>
+
 
 
 
@@ -171,16 +173,16 @@
                 <ul class="nav navbar-nav side-nav">
                     <!-- 在用户管理中包含部门管理-->
                     <li class="active">
-                        <a href="javascript:void(0)"  onclick="managePage('Usermanage')"><i class="fa fa-fw fa-dashboard"></i> 用户管理</a>
+                        <a href="javascript:void(0)"  name="Usermanage" a-type="nav"><i class="fa fa-fw fa-dashboard"></i> 用户管理</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" onclick="managePage('Deptmanage')"><i class="fa fa-fw fa-bar-chart-o"></i> 部门管理</a>
+                        <a href="javascript:void(0)" name='Deptmanage'  a-type="nav"><i class="fa fa-fw fa-bar-chart-o"></i> 部门管理</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" onclick="managePage('Dbmanage')"><i class="fa fa-fw fa-bar-chart-o"></i> 数据库管理</a>
+                        <a href="javascript:void(0)" name="Dbmanage"  a-type="nav"><i class="fa fa-fw fa-bar-chart-o"></i> 数据库管理</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" onclick="managePage('Formmanage')"><i class="fa fa-fw fa-table"></i> 表单管理</a>
+                        <a href="javascript:void(0)" name="Formmanage"  a-type="nav"><i class="fa fa-fw fa-table"></i> 表单管理</a>
                     </li>
                 </ul>
             </div>
@@ -212,6 +214,31 @@
         $(this).siblings().attr("class","");
         $(this).attr("class","active");
     });
-    managePage('Usermanage');
+    seajs.use('/work/admin/sysadmin/sysadmin.js',function(sysadmin){
+        var data = {
+            branch: [
+                {
+                    name: "部门一", class: "department", branch: [
+                    {name: "经理一", class: "staff", branch: []},
+                    {name: "员工一", class: "staff", branch: []},
+                    {name: "员工二", class: "staff", branch: []},
+                ]
+                },
+                {
+                    name: "部门二", class: "department", branch: [
+                    {name: "经理二", class: "staff", branch: []},
+                    {
+                        name: "子部门一", class: "department", branch: [
+                        {name: "员工一", class: "staff", branch: []},
+                        {name: "员工二", class: "staff", branch: []},
+                    ]
+                    },
+                ]
+                },
+                {name: "部门三", class: "department", branch: []},
+            ]
+        };
+        sysadmin.init(data,'Usermanage');
+    });
 
 </script>
