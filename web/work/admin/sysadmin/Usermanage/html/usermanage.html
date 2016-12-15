@@ -19,56 +19,80 @@
                 </div>
                 <div class="panel-body">
                     <div class="tree well">
-                        <ul>
-                            <li>
-                                <span><i class="glyphicon glyphicon-home"></i> 顶级节点1</span> <a href="">Goes somewhere</a>
-                                <ul>
-                                    <li>
-                                        <span><i class="glyphicon glyphicon-minus-sign"></i> 一级节点1</span> <a href=""></a>
-                                        <ul>
-                                            <li>
-                                                <span><i class="glyphicon glyphicon-leaf"></i> 二级节点1_1</span> <a href=""></a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span><i class="glyphicon glyphicon-minus-sign"></i> 一级节点2</span> <a href=""></a>
-                                        <ul>
-                                            <li>
-                                                <span><i class="glyphicon glyphicon-minus-sign"></i> 二级节点2_2</span> <a href=""></a>
-                                                <ul>
-                                                    <li>
-                                                        <span><i class="glyphicon glyphicon-minus-sign"></i>三级节点2_1</span> <a href=""></a>
-                                                        <ul>
-                                                            <li>
-                                                                <span><i class="glyphicon glyphicon-leaf"></i>四级节点2_1</span> <a href=""></a>
-                                                            </li>
-                                                            <li>
-                                                                <span><i class="glyphicon glyphicon-leaf"></i> 四级节点2_2</span> <a href=""></a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-8" style="height: 100%;">
-            <div class="panel panel-primary">
+
+
+            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        用户基本信息
-                    </h3>
+                    <ul id="userManageTab" class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#userinfo" data-toggle="tab">用户基本信息</a>
+                        </li>
+                        <li>
+                            <a href="#createuser" data-toggle="tab">创建新用户</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="panel-body" id="userinfotemplate">
-                    <img src="/work/admin/sysadmin/Usermanage/img/backgroud.jpg" class="img-rounded col-lg-12">
+                <div class="panel-body" id="userManageTemplate">
+                    <div id="myTabContent" class="tab-content">
+                        <!-- 用户基本信息面板-->
+                        <div class="tab-pane fade in active" id="userinfo">
+                            <img src="/work/admin/sysadmin/Usermanage/img/backgroud.jpg" class="img-rounded col-lg-12">
+                        </div>
+                        <!-- 创建用户面板-->
+                        <div class="tab-pane fade" id="createuser">
+                            <form class="form-horizontal" role="form" id="cu-form">
+                                <div class="form-group">
+                                    <label for="cu-username" class="col-sm-2 control-label">用户名</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="cu-username" placeholder="请输入用户名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cu-password" class="col-sm-2 control-label">密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="cu-password" placeholder="请输入密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cu-confirmpassword" class="col-sm-2 control-label">确认密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="cu-confirmpassword" placeholder="请确认密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cu-authority" class="col-sm-2 control-label">权限</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="cu-authority" placeholder="请输入权限">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cu-fullname" class="col-sm-2 control-label">名字</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="cu-fullname" placeholder="请输入名字">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cu-email" class="col-sm-2 control-label">邮箱</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="cu-email" placeholder="请输入邮箱">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default">创建新用户</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
     </div>
