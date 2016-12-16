@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/12/12 0012.
  */
 define(function(require,exports,module){
-    var userManage=require('/work/admin/sysadmin/Usermanage/js/usermanage.js');
+    var userDeptManage=require('/work/admin/sysadmin/UserDeptmanage/js/usermanage.js');
     exports.data=[];
     exports.init=function(data,parm){
         exports.data=data;
@@ -16,9 +16,7 @@ define(function(require,exports,module){
     function managePage(parm) {
         switch (parm) {
             case 'Usermanage':
-                userManage.init('content',exports.data);
-                break;
-            case 'Deptmanage':
+                userDeptManage.init('content',exports.data);
                 break;
             case 'Dbmanage':
                 break;
