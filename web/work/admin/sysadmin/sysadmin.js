@@ -3,6 +3,7 @@
  */
 define(function(require,exports,module){
     var userManage=require('/work/admin/sysadmin/Usermanage/js/usermanage.js');
+    var dataManage=require('/work/admin/sysadmin/Datamanage/js/datamanage.js');
     exports.data=[];
     exports.init=function(data,parm){
         exports.data=data;
@@ -21,6 +22,7 @@ define(function(require,exports,module){
             case 'Deptmanage':
                 break;
             case 'Dbmanage':
+                dataManage.init('content',exports.data);
                 break;
             case 'Formmanage':
                 break;
