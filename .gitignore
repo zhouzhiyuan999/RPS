@@ -1,5 +1,4 @@
 *.class
-.idea/workspace.xml
 .idea/
 out/
 web/WEB-INF/classes/
@@ -15,3 +14,4 @@ web/WEB-INF/classes/
 hs_err_pid*
 
 
+.idea/workspace.xml
