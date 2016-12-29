@@ -5,5 +5,29 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+        <!--<include file="struts-default.xml"></include>-->
         <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+        <!-- 包含配置文件信息-->
+        <!--<include file="com/rps/action/struts.rps.xml"></include>-->
+
+        <!--<package name="rps" namespace="/rps" extends="struts-default">-->
+
+                <!--<action name="login" class="com.rps.action.Login">-->
+                        <!--<result name="admin">/work/admin/sysadmin/sysadmin.html</result>-->
+                        <!--<result name="user">/test_success.jsp</result>-->
+                        <!--<result name="login">/test.jsp</result>-->
+                        <!--<result type="json"></result>-->
+                <!--</action>-->
+        <!--</package>-->
+        <package name="json" namespace="/json" extends="json-default,struts-default">
+                <action name="login" class="com.rps.action.Login">
+                        <result name="success" type="json">
+                                <param name="root">data</param>
+                        </result>
+                        <result name="login">work/user/login/login.html</result>
+                </action>
+
+        </package>
+
 </struts>

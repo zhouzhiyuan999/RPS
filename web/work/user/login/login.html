@@ -108,19 +108,26 @@
             var isuser= $('input[name="optionsRadios"]:checked ').val();
             //调用ajax向后台发送数据
             $.ajax({
-                url: "/login.do",
+                url: "/json/login.action",
                 type:"POST",
+                dataType:"json",
                 data:{
                     "username":username,
                     "password":password,
                     "isuser":isuser
                 },
-                success: function(){
-                $(this).addClass("done");
-                    alert("成功");
+                success: function(data){
+//                var obj= $.parseJSON(data);
+//                    var obj=eval('('+data+')');
+//                    var jsonObj=JSON.parse(data);
+//                    var st_value=obj.result;
+//                $(this).addClass("done");
+//                    alert("恭喜"+jsonObj.username+"登录成功！");
+                    alert("成功！"+data);
+//                    alert(obj.msg+obj.username);
                 },
-                error:function(){
-                    alert("失败");
+                error:function(httpstate){
+                    alert("服务器错误");
                 }
             });
             window.location.href='/work/admin/sysadmin/sysadmin.html';
