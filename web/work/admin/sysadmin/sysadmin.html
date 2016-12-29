@@ -16,9 +16,6 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="/work/third-party/bootstrap/js/bootstrap.min.js"></script>
 
-
-
-
     <!-- Bootstrap Core CSS -->
     <link href="/work/third-party/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -31,12 +28,29 @@
     <!-- Custom Fonts -->
     <link href="/work/third-party/sbadmin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Tree bootstrap-->
+    <link href="/work/third-party/jquerytree/css/style.css" rel="stylesheet">
+
+    <!-- RPS Admin CSS -->
+    <link href="/work/admin/sysadmin/css/rps-admin.css" rel="stylesheet">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/work/third-party/common.js"></script>
+    <script src="/work/third-party/template-native.js"></script>
+    <script src="/work/third-party/sea.js"></script>
+    <script src="sysadmin.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <!--<script src="/work/third-party/sbadmin/js/plugins/morris/raphael.min.js"></script>-->
+    <!--<script src="/work/third-party/sbadmin/js/plugins/morris/morris.min.js"></script>-->
+    <!--<script src="/work/third-party/sbadmin/js/plugins/morris/morris-data.js"></script>-->
+
+
 
 </head>
 
@@ -161,17 +175,15 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <!-- 在用户管理中包含部门管理-->
                     <li class="active">
-                        <a href="sysadmin.html"><i class="fa fa-fw fa-dashboard"></i> 用户管理</a>
+                        <a href="javascript:void(0)"  name="Usermanage" a-type="nav"><i class="fa fa-fw fa-dashboard"></i> 用户-部门管理</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> 部门管理</a>
+                        <a href="javascript:void(0)" name="Dbmanage"  a-type="nav"><i class="fa fa-fw fa-bar-chart-o"></i> 数据库管理</a>
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> 数据库管理</a>
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> 表单管理</a>
+                        <a href="javascript:void(0)" name="Formmanage"  a-type="nav"><i class="fa fa-fw fa-table"></i> 表单管理</a>
                     </li>
                 </ul>
             </div>
@@ -180,90 +192,9 @@
 
         <div id="page-wrapper">
 
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <!-- 首页 用户管理页面 左侧为用户部门树 右侧为用户信息-->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            用户管理 <small>User Management </small>
-                        </h1>
-                    </div>
-                </div>
-                <!-- /.row -->
-                <div class="row" style="min-height: 750px;">
-                    <div class="col-lg-4"  style="height: 100%;">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    用户-部门结构图
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                面板内容
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8" style="height: 100%;">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    用户基本信息
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>用户名</strong></td>
-                                        <td contenteditable="false">zhouzhiyuan999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>权限</strong></td>
-                                        <td contenteditable="false">普通用户/财务管理员/系统管理员</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>邮箱</strong></td>
-                                        <td contenteditable="false">5942xxx532@qq.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>姓名</strong></td>
-                                        <td contenteditable="false">周某某</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>年龄</strong></td>
-                                        <td contenteditable="false">20</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>部门</strong></td>
-                                        <td contenteditable="false">开发部</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>联系电话</strong></td>
-                                        <td contenteditable="false">139xxxx0054</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>地址</strong></td>
-                                        <td contenteditable="false">xx省xx市xx区xx街道</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-lg-3"><strong>邮编</strong></td>
-                                        <td contenteditable="false">100083</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <button type="button" class="btn btn-default col-lg-3 col-lg-offset-2">编辑</button>
-                                <button type="button" class="btn btn-default col-lg-3 col-lg-offset-2">保存</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-
+            <div class="container-fluid" id="content">
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- /#page-wrapper -->
 
@@ -271,10 +202,40 @@
     <!-- /#wrapper -->
 
 
-    <!-- Morris Charts JavaScript -->
-    <script src="/work/third-party/sbadmin/js/plugins/morris/raphael.min.js"></script>
-    <script src="/work/third-party/sbadmin/js/plugins/morris/morris.min.js"></script>
-    <script src="/work/third-party/sbadmin/js/plugins/morris/morris-data.js"></script>
-</body>
 
+
+</body>
 </html>
+<script>
+    $("ul.nav li").click(function(){
+        $(this).siblings().attr("class","");
+        $(this).attr("class","active");
+    });
+    seajs.use('/work/admin/sysadmin/sysadmin.js',function(sysadmin){
+        var data = {
+            branch: [
+                {
+                    name: "部门一", class: "department", branch: [
+                    {name: "经理一", class: "staff", branch: []},
+                    {name: "员工一", class: "staff", branch: []},
+                    {name: "员工二", class: "staff", branch: []},
+                ]
+                },
+                {
+                    name: "部门二", class: "department", branch: [
+                    {name: "经理二", class: "staff", branch: []},
+                    {
+                        name: "子部门一", class: "department", branch: [
+                        {name: "员工一", class: "staff", branch: []},
+                        {name: "员工二", class: "staff", branch: []},
+                    ]
+                    },
+                ]
+                },
+                {name: "部门三", class: "department", branch: []},
+            ]
+        };
+        sysadmin.init(data,'Usermanage');
+    });
+
+</script>
