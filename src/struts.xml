@@ -7,27 +7,115 @@
 <struts>
         <!--<include file="struts-default.xml"></include>-->
         <constant name="struts.i18n.encoding" value="UTF-8"/>
+        <constant name="struts.enable.DynamicMethodInvocation" value="true" />
 
-        <!-- 包含配置文件信息-->
-        <!--<include file="com/rps/action/struts.rps.xml"></include>-->
+        <package name="home" namespace="/" extends="json-default,struts-default">
+                <!-- 定义一个拦截器 -->
+                <interceptors>
+                        <interceptor name="LoginInterceptor" class="com.rps.interceptor.LoginInterceptor"/>
+                </interceptors>
 
-        <!--<package name="rps" namespace="/rps" extends="struts-default">-->
+                <!-- 定义全局index -->
+                <global-results>
+                        <result name="index" type="redirect">/index.jsp</result>
+                </global-results>
 
-                <!--<action name="login" class="com.rps.action.Login">-->
-                        <!--<result name="admin">/work/admin/sysadmin/sysadmin.html</result>-->
-                        <!--<result name="user">/test_success.jsp</result>-->
-                        <!--<result name="login">/test.jsp</result>-->
-                        <!--<result type="json"></result>-->
-                <!--</action>-->
-        <!--</package>-->
-        <package name="json" namespace="/json" extends="json-default,struts-default">
-                <action name="login" class="com.rps.action.Login">
-                        <result name="success" type="json">
-                                <param name="root">data</param>
-                        </result>
-                        <result name="login">work/user/login/login.html</result>
+                <!-- 用户登录 -->
+                <action name="logAction" class="com.rps.action.LogAction">
+                        <result name="success" type="redirectAction"><param name="actionName">logAction</param></result>
+                        <result name="login">/WEB-INF/login/login.jsp</result>
+                        <result name="admin">/WEB-INF/admin/admin.jsp</result>
+                        <result name="manager">/WEB-INF/manager/manager.jsp</result>
+                        <result name="user">/WEB-INF/user/user.jsp</result>
                 </action>
 
+                <!-- 用户管理 -->
+                <action name="regAction" class="com.rps.action.RegAction">
+                        <result name="success" type="redirectAction"><param name="actionName">regAction</param></result>
+                        <result name="list">/WEB-INF/admin/User/list.jsp</result>
+                        <result name="add">/WEB-INF/admin/User/add.jsp</result>
+                        <result name="edit">/WEB-INF/admin/User/edit.jsp</result>
+                        <result name="hello">/WEB-INF/admin/hello.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">4</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
+
+                <!-- 部门管理 -->
+                <action name="deptAction" class="com.rps.action.DeptAction">
+                        <result name="success" type="redirectAction"><param name="actionName">deptAction</param></result>
+                        <result name="list">/WEB-INF/admin/Dept/list.jsp</result>
+                        <result name="add">/WEB-INF/admin/Dept/add.jsp</result>
+                        <result name="edit">/WEB-INF/admin/Dept/edit.jsp</result>
+                        <result name="dept">/WEB-INF/admin/Dept/dept.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">4</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
+
+                <!-- 模板管理 -->
+                <action name="tempAction" class="com.rps.action.TempAction">
+                        <result name="success" type="redirectAction"><param name="actionName">tempAction</param></result>
+                        <result name="list">/WEB-INF/admin/Temp/list.jsp</result>
+                        <result name="add">/WEB-INF/admin/Temp/add.jsp</result>
+                        <result name="edit">/WEB-INF/admin/Temp/edit.jsp</result>
+                        <result name="itemlist">/WEB-INF/admin/Temp/itemlist.jsp</result>
+                        <result name="itemadd">/WEB-INF/admin/Temp/itemadd.jsp</result>
+                        <result name="itemedit">/WEB-INF/admin/Temp/itemedit.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">4</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
+
+                <!-- 个人信息 -->
+                <action name="infoAction" class="com.rps.action.InfoAction">
+                        <result name="success" type="redirectAction"><param name="actionName">infoAction</param></result>
+                        <result name="show">/WEB-INF/user/Info/show.jsp</result>
+                        <result name="pass">/WEB-INF/user/Info/pass.jsp</result>
+                        <result name="hello">/WEB-INF/user/hello.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">3</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
+
+                <!-- 表单模板 -->
+                <action name="formAction" class="com.rps.action.FormAction">
+                        <result name="success" type="redirectAction"><param name="actionName">formAction</param></result>
+                        <result name="list">/WEB-INF/user/Form/list.jsp</result>
+                        <result name="add">/WEB-INF/user/Form/add.jsp</result>
+                        <result name="edit">/WEB-INF/user/Form/edit.jsp</result>
+                        <result name="data">/WEB-INF/user/Form/data.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">3</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
+
+                <!-- 数据管理 -->
+                <action name="statAction" class="com.rps.action.StatAction">
+                        <result name="success" type="redirectAction"><param name="actionName">statAction</param></result>
+                        <result name="hello">/WEB-INF/manager/Stat/hello.jsp</result>
+                        <interceptor-ref name="LoginInterceptor">
+                                <param name="authority">2</param>
+                        </interceptor-ref>
+                        <interceptor-ref name="defaultStack"/>
+                </action>
         </package>
+
+
+
+        <!--<package name="json" namespace="/json" extends="json-default,struts-default">-->
+                <!--<action name="login" class="com.rps.action.Login">-->
+                        <!--<result name="success" type="json">-->
+                                <!--<param name="root">data</param>-->
+                        <!--</result>-->
+                        <!--<result name="login">work/user/login/login.html</result>-->
+                <!--</action>-->
+
+        <!--</package>-->
 
 </struts>
