@@ -1,0 +1,57 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: yinhao
+  Date: 2016/12/29
+  Time: 16:23
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page pageEncoding="UTF-8" contentType="text/html;charset=utf-8" language="java" %>
+<%--<%@ include file="admin_is_login.jsp"%>--%>
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+admin
+<br>
+<a href="logAction!logout">logout</a>
+
+<br>
+添加用户：<br>
+<form method="POST" action="regAction!add">
+用户名:
+<input name="username" type="text">
+密码:
+<input name="password" type="password">
+部门：
+<select name="dept">
+  <option value="1">1</option>
+</select>
+权限：
+<input name="role" type="text">
+<button type="submit">submit</button>
+</form>
+
+<br>
+
+<%--<s:set name="users" value="{'1','2','3'}"/>--%>
+<s:iterator value="users" id="user">
+  <a href="regAction!del?_id=<s:property value="#user._id"/>"><s:property value="#user"/></a> <br>
+</s:iterator>
+
+<br>
+<form method="post" action="regAction!nedep">
+  <input name="dept" type="text">
+  <button type="submit">submit</button>
+</form>
+
+<br>
+
+<s:iterator value="depts" id="dept">
+  <a href="regAction!dedep?dept=<s:property value="#dept"/>"><s:property value="#dept"/></a> <br>
+</s:iterator>
+
+</body>
+</html>

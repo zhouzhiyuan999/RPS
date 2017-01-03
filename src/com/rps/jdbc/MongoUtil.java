@@ -8,15 +8,19 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Êı¾İ¿â²Ù×÷¹¤¾ßÀà <br>
+ * æ•°æ®åº“æ“ä½œå·¥å…·ç±» <br>
  * Created by yinhao on 2016/12/8.
  * @author yinhao
  * @version 1.0
  */
 public class MongoUtil {
+
+    public final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     final private static String host = "localhost";
     final private static int port = 27017;
@@ -37,121 +41,115 @@ public class MongoUtil {
     }
 
     /**
-     * ¼ÆÊıµ±Ç°¼¯ºÏÖĞ¸ù¾İ¸ø¶¨É¸Ñ¡Ìõ¼şÏÂµÄÎÄµµÊı
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @return ¼¯ºÏÖĞÎÄµµµÄÊıÁ¿
+     * è®¡æ•°å½“å‰é›†åˆä¸­æ ¹æ®ç»™å®šç­›é€‰æ¡ä»¶ä¸‹çš„æ–‡æ¡£æ•°
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @return é›†åˆä¸­æ–‡æ¡£çš„æ•°é‡
      */
     public static long count(String colname, Bson filter){
         return getCollection(colname).count(filter);
     }
 
     /**
-     * É¾³ı¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄ¶à¸öÎÄµµ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @return É¾³ı²Ù×÷µÄ½á¹û
+     * åˆ é™¤é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„å¤šä¸ªæ–‡æ¡£
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @return åˆ é™¤æ“ä½œçš„ç»“æœ
      */
     public static DeleteResult deleteMany(String colname, Bson filter){
         return getCollection(colname).deleteMany(filter);
     }
 
     /**
-     * É¾³ı¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄµÚÒ»¸öÎÄµµ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @return É¾³ı²Ù×÷µÄ½á¹û
+     * åˆ é™¤é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„ç¬¬ä¸€ä¸ªæ–‡æ¡£
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @return åˆ é™¤æ“ä½œçš„ç»“æœ
      */
     public static DeleteResult deleteOne(String colname, Bson filter){
         return getCollection(colname).deleteOne(filter);
     }
 
     /**
-     * ´ÓÊı¾İ¿âÖĞÉ¾³ıÖ¸¶¨¼¯ºÏ
-     * @param colname ¼¯ºÏÃû³Æ
+     * ä»æ•°æ®åº“ä¸­åˆ é™¤æŒ‡å®šé›†åˆ
+     * @param colname é›†åˆåç§°
      */
     public static void drop(String colname){
         getCollection(colname).drop();
     }
 
     /**
-     * ²éÑ¯¼¯ºÏÖĞËùÓĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄÎÄµµ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @return ÎÄµµ¼¯ºÏ¹â±ê
+     * æŸ¥è¯¢é›†åˆä¸­æ‰€æœ‰æ»¡è¶³ç­›é€‰æ¡ä»¶çš„æ–‡æ¡£
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @return æ–‡æ¡£é›†åˆå…‰æ ‡
      */
     public static MongoCursor<Document> find(String colname, Bson filter){
         return getCollection(colname).find(filter).iterator();
     }
 
     /**
-     * ²éÑ¯¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄµÚÒ»¸öÎÄµµ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @return ÎÄµµ¶ÔÏó
+     * æŸ¥è¯¢é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„ç¬¬ä¸€ä¸ªæ–‡æ¡£
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @return æ–‡æ¡£å¯¹è±¡
      */
     public static Document findOne(String colname, Bson filter){
         return getCollection(colname).find(filter).first();
     }
 
     /**
-     * Ò»´ÎĞÔ²åÈë¶à¸öÎÄµµµ½¼¯ºÏÖĞ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param docs ¶à¸öÎÄµµµÄÁĞ±í¶ÔÏó
+     * ä¸€æ¬¡æ€§æ’å…¥å¤šä¸ªæ–‡æ¡£åˆ°é›†åˆä¸­
+     * @param colname é›†åˆåç§°
+     * @param docs å¤šä¸ªæ–‡æ¡£çš„åˆ—è¡¨å¯¹è±¡
      */
     public static void insertMany(String colname, List<Document> docs){
         getCollection(colname).insertMany(docs);
     }
 
     /**
-     * ²åÈëµ¥¸öÎÄµµµ½¼¯ºÏÖĞ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param doc ÎÄµµ¶ÔÏó
+     * æ’å…¥å•ä¸ªæ–‡æ¡£åˆ°é›†åˆä¸­
+     * @param colname é›†åˆåç§°
+     * @param doc æ–‡æ¡£å¯¹è±¡
      */
     public static void insertOne(String colname, Document doc){
         getCollection(colname).insertOne(doc);
     }
 
     /**
-     * Ìæ»»¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄµ¥¸öÎÄµµ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @param doc ÎÄµµ¶ÔÏó
-     * @return Ìæ»»½á¹û
+     * æ›¿æ¢é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„å•ä¸ªæ–‡æ¡£
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @param doc æ–‡æ¡£å¯¹è±¡
+     * @return æ›¿æ¢ç»“æœ
      */
     public static UpdateResult replaceOne(String colname, Bson filter, Document doc){
         return getCollection(colname).replaceOne(filter, doc);
     }
 
     /**
-     * ¸üĞÂ¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄ¶à¸öÎÄµµµÄÄÚÈİ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @param op Òª¸üĞÂµÄ²Ù×÷°ì·¨
-     * @param value ¸üĞÂµÄvalueÄÚÈİ
-     * @return ¸üĞÂ½á¹û
+     * æ›´æ–°é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„å¤šä¸ªæ–‡æ¡£çš„å†…å®¹
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @param op è¦æ›´æ–°çš„æ“ä½œåŠæ³•
+     * @param value æ›´æ–°çš„valueå†…å®¹
+     * @return æ›´æ–°ç»“æœ
      */
     public static UpdateResult updateMany(String colname, Bson filter, String op, Object value){
         return getCollection(colname).updateMany(filter, new Document(op, value));
     }
 
     /**
-     * ¸üĞÂ¼¯ºÏÖĞÂú×ãÉ¸Ñ¡Ìõ¼şµÄµÚÒ»¸öÎÄµµµÄÄÚÈİ
-     * @param colname ¼¯ºÏÃû³Æ
-     * @param filter É¸Ñ¡Ìõ¼ş
-     * @param op Òª¸üĞÂµÄkeyÖµ
-     * @param value ¸üĞÂµÄvalueÄÚÈİ
-     * @return ¸üĞÂ½á¹û
+     * æ›´æ–°é›†åˆä¸­æ»¡è¶³ç­›é€‰æ¡ä»¶çš„ç¬¬ä¸€ä¸ªæ–‡æ¡£çš„å†…å®¹
+     * @param colname é›†åˆåç§°
+     * @param filter ç­›é€‰æ¡ä»¶
+     * @param op è¦æ›´æ–°çš„keyå€¼
+     * @param value æ›´æ–°çš„valueå†…å®¹
+     * @return æ›´æ–°ç»“æœ
      */
     public static UpdateResult updateOne(String colname, Bson filter, String op, Object value){
         return getCollection(colname).updateOne(filter, new Document(op, value));
     }
-
-
-
-
-
-
 
 
 }

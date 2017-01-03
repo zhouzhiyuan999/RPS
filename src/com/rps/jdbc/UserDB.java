@@ -3,102 +3,75 @@ package com.rps.jdbc;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import java.security.spec.PSSParameterSpec;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Êı¾İ¿âÓÃ»§¹ÜÀíÀà <br>
+ * æ•°æ®åº“ç”¨æˆ·ç®¡ç†ç±» <br>
  * Created by yinhao on 2016/12/8.
  * @author yinhao
  * @version 1.0
  */
 public class UserDB {
 
-    final private static String COLNAME = "users";
+    private final static String COLNAME = "users";
+//    public final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public final static String USERNAME = "username";
+    public final static String PASSWORD = "password";
+    public final static String REALNAME = "realname";
+    public final static String ROLE = "role";
+    public final static String DEPT = "dept";
+    public final static String LASTTIME = "lasttime";
+
 
     private UserDB(){};
 
     /**
-     * ³õÊ¼»¯¹ÜÀíÔ±ÓÃ»§ÃûÎªadmin£¬ÃÜÂëÎª123456£¬²¿ÃÅÄ¬ÈÏÎªÎŞ <br>
-     * ¹ÜÀíÔ±½ÇÉ«Õû¸öÏµÍ³ÓĞÇÒ½öÓĞÒ»¸ö
+     * åˆå§‹åŒ–ç®¡ç†å‘˜ç”¨æˆ·åä¸ºadminï¼Œå¯†ç ä¸º123456ï¼Œéƒ¨é—¨é»˜è®¤ä¸ºæ—  <br>
+     * ç®¡ç†å‘˜è§’è‰²æ•´ä¸ªç³»ç»Ÿæœ‰ä¸”ä»…æœ‰ä¸€ä¸ª
      */
     public static void InitAdmin(){
-        if (MongoUtil.findOne(COLNAME, Filters.eq("username", "admin"))==null) {
-            ArrayList<String> dept = new ArrayList<String>();
-            dept.add("ÎŞ");
-            Document doc = new Document("username","admin").append("password","123456").append("depts",dept);
+        if (MongoUtil.findOne(COLNAME, Filters.eq(USERNAME, "admin"))==null) {
+            Document doc = new Document(USERNAME,"admin").append(PASSWORD,"123456").append(REALNAME,"ç³»ç»Ÿç®¡ç†å‘˜").append(ROLE,"admin").append(LASTTIME,new Date());
             MongoUtil.insertOne(COLNAME, doc);
+            DeptDB.InitDept();
         }
     }
 
     /**
-     * ÖØÖÃ¹ÜÀíÔ±ÓÃ»§µÄÃÜÂë
-     * @param password ÃÜÂë
-     * @return ±»ĞŞ¸ÄµÄ¼ÇÂ¼Êı
+     * åˆ é™¤ä¸€ä¸ªéƒ¨é—¨,åŒæ—¶å°†è¯¥éƒ¨é—¨ç”¨æˆ·ç§»åˆ°é»˜è®¤åˆ†ç»„â€œæ— â€
+     * @param number éƒ¨é—¨åç§°
+     * @return å› åˆ é™¤éƒ¨é—¨è¢«å½±å“ç”¨æˆ·çš„è®°å½•æ•°
      */
-    public static long SetAdmin(String password){
-        Document doc = new Document("password",password);
-        return MongoUtil.updateOne(COLNAME, Filters.eq("username","admin"),"$set",doc).getModifiedCount();
-    }
-
-    /**
-     * »ñÈ¡µ±Ç°ÏµÍ³ÖĞµÄ²¿ÃÅĞÅÏ¢
-     * @return ²¿ÃÅÁĞ±í
-     */
-    public static ArrayList<String> GetDepts(){
-        Document doc = MongoUtil.findOne(COLNAME, Filters.eq("username", "admin"));
-        return (ArrayList<String>) doc.get("depts");
-    }
-
-    /**
-     * Ìí¼ÓÒ»¸ö²¿ÃÅ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return Ìí¼ÓµÄ¼ÇÂ¼Êı£¬0»ò1
-     */
-    public static long AddDept(String dept){
-        return MongoUtil.updateOne(COLNAME, Filters.eq("username","admin"),"$addToSet",new Document("depts",dept)).getModifiedCount();
-    }
-
-    /**
-     * É¾³ıÒ»¸ö²¿ÃÅ,Í¬Ê±½«¸Ã²¿ÃÅÓÃ»§ÒÆµ½Ä¬ÈÏ·Ö×é¡°ÎŞ¡±
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return ÒòÉ¾³ı²¿ÃÅ±»Ó°ÏìÓÃ»§µÄ¼ÇÂ¼Êı
-     */
-    public static long DelDept(String dept){
-        if (!dept.equals("ÎŞ")) {
-            MongoUtil.updateOne(COLNAME, Filters.eq("username", "admin"), "$pull", new Document("depts", dept));
-            return MongoUtil.updateMany(COLNAME, Filters.eq("dept", dept), "$set", new Document("dept", "ÎŞ")).getModifiedCount();
+    public static long ClearDept(String number){
+        if (!number.equals(DeptDB.DEFAULT)) {
+            return MongoUtil.updateMany(COLNAME, Filters.eq(DEPT, number), "$set", new Document(DEPT,DeptDB.DEFAULT)).getModifiedCount();
         }
         return 0;
     }
 
     /**
-     * ÖØÃüÃûÒ»¸ö²¿ÃÅ£¬Í¬Ê±Òª¸ü¸ÄÏàÓ¦ÓÃ»§µÄËùÊô²¿ÃÅÃû
-     * @param old ¾É²¿ÃÅÃû
-     * @param now ĞÂ²¿ÃÅÃû
-     * @return ±»ĞŞ¸Ä²¿ÃÅÃû³ÆËùÓ°ÏìµÄÓÃ»§µÄ¼ÇÂ¼Êı
+     * æ–°å¢ä¸€ä¸ªç”¨æˆ·
+     * @param username ç”¨æˆ·å
+     * @param password å¯†ç 
+     * @param realname çœŸå®å§“å
+     * @param role ç”¨æˆ·ç±»å‹
+     * @param number éƒ¨é—¨ç¼–å·
+     * @return trueè¡¨ç¤ºæ–°å¢ç”¨æˆ·æˆåŠŸï¼Œfalseè¡¨ç¤ºç”¨æˆ·å·²å­˜åœ¨
      */
-    public static long ReDept(String old, String now){
-        if (!old.equals("ÎŞ") && !now.equals("ÎŞ")){
-            MongoUtil.updateOne(COLNAME, Filters.and(Filters.eq("username", "admin"), Filters.eq("depts",old)),"$set",new Document("depts.$",now));
-            return MongoUtil.updateMany(COLNAME, Filters.eq("dept", old), "$set", new Document("dept", now)).getModifiedCount();
-        }
-        return 0;
-    }
-
-    /**
-     * ĞÂÔöÒ»¸öÓÃ»§
-     * @param username ÓÃ»§Ãû
-     * @param password ÃÜÂë
-     * @param type ÓÃ»§ÀàĞÍ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return true±íÊ¾ĞÂÔöÓÃ»§³É¹¦£¬false±íÊ¾ÓÃ»§ÒÑ´æÔÚ
-     */
-    public static boolean AddUser(String username, String password, String type, String dept){
-        if (MongoUtil.findOne(COLNAME, Filters.eq("username", username))==null) {
-            Document doc = new Document("username", username).append("password", password).append("type", type);
-            if (!GetDepts().contains(dept)){dept="ÎŞ";}
-            doc.append("dept",dept);
+    public static boolean AddUser(String username, String password, String realname, String role, String number){
+        if (MongoUtil.findOne(COLNAME, Filters.eq(USERNAME, username))==null) {
+            Document doc = new Document(USERNAME, username).append(PASSWORD, password).append(REALNAME,realname).append(ROLE, role);
+            if (!DeptDB.GetDeptNumbers(new Document()).contains(number)){number="";}
+            doc.append(DEPT,number);
+            doc.append(LASTTIME,new Date());
             MongoUtil.insertOne(COLNAME,doc);
             return true;
         }
@@ -106,157 +79,97 @@ public class UserDB {
     }
 
     /**
-     * ¸ù¾İÓÃ»§idÉ¾³ıÓÃ»§£¬admin³ıÍâ
-     * @param oid ÓÃ»§id
-     * @return ±»É¾³ıµÄ¼ÇÂ¼Êı£¬0»ò1
+     * æ ¹æ®ç”¨æˆ·idåˆ é™¤ç”¨æˆ·ï¼Œadminé™¤å¤–
+     * @param oid ç”¨æˆ·id
+     * @return è¢«åˆ é™¤çš„è®°å½•æ•°ï¼Œ0æˆ–1
      */
     public static long DelUserById(String oid){
-        if (!MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(oid))).getString("username").equals("admin")){
+        if (oid==null || !ObjectId.isValid(oid)) return 0;
+        Document doc = MongoUtil.findOne(COLNAME, Filters.eq("_id", new ObjectId(oid)));
+        if (doc!=null && !doc.getString(USERNAME).equals("admin")){
             return MongoUtil.deleteOne(COLNAME, Filters.eq("_id", new ObjectId(oid))).getDeletedCount();
         }
         return 0;
     }
 
     /**
-     * ¸ù¾İÓÃ»§ÃûÉ¾³ıÓÃ»§£¬admin³ıÍâ
-     * @param username ÓÃ»§Ãû
-     * @return ±»É¾³ıµÄ¼ÇÂ¼Êı£¬0»ò1
+     * æ ¹æ®ç”¨æˆ·ååˆ é™¤ç”¨æˆ·ï¼Œadminé™¤å¤–
+     * @param username ç”¨æˆ·å
+     * @return è¢«åˆ é™¤çš„è®°å½•æ•°ï¼Œ0æˆ–1
      */
     public static long DelUserByName(String username){
+        if (username==null) return 0;
         if (!username.equals("admin")){
-            return MongoUtil.deleteOne(COLNAME, Filters.eq("username", username)).getDeletedCount();
+            return MongoUtil.deleteOne(COLNAME, Filters.eq(USERNAME, username)).getDeletedCount();
         }
         return 0;
     }
 
     /**
-     * ¸ù¾İÓÃ»§id¸ü¸ÄÓÃ»§ÃÜÂë£¬admin³ıÍâ
-     * @param oid ÓÃ»§id
-     * @param password ÓÃ»§ÃÜÂë
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
+     * æ ¹æ®ç”¨æˆ·idæ›´æ”¹ç”¨æˆ·å¯†ç 
+     * @param oid ç”¨æˆ·id
+     * @param doc ä¿®æ”¹çš„å†…å®¹å°è£…æˆæ–‡æ¡£
+     * @return è¢«æˆåŠŸä¿®æ”¹çš„ç”¨æˆ·æ•°ï¼Œ0æˆ–1
      */
-    public static long SetUserById(String oid, String password){
-        if (!MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(oid))).getString("username").equals("admin")){
-            Document doc = new Document("password", password);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(oid)), "$set", doc).getModifiedCount();
-        }
-        return 0;
+    public static long SetUserById(String oid, Document doc){
+        if (oid==null || !ObjectId.isValid(oid)) return 0;
+        return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(oid)), "$set", doc).getModifiedCount();
     }
 
     /**
-     * ¸ù¾İÓÃ»§id¸ü¸ÄÓÃ»§»ù±¾ÊôĞÔ£¬°üÀ¨È¨ÏŞÒÔ¼°ËùÊô²¿ÃÅ£¬admin³ıÍâ
-     * @param oid ÓÃ»§id
-     * @param type ÓÃ»§ÀàĞÍ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
+     * æ ¹æ®ç”¨æˆ·åæ›´æ–°ç”¨æˆ·å¯†ç ï¼Œadminé™¤å¤–
+     * @param username ç”¨æˆ·å
+     * @param doc ä¿®æ”¹çš„å†…å®¹å°è£…æˆæ–‡æ¡£
+     * @return è¢«æˆåŠŸä¿®æ”¹çš„ç”¨æˆ·æ•°ï¼Œ0æˆ–1
      */
-    public static long SetUserById(String oid, String type, String dept){
-        if (!MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(oid))).getString("username").equals("admin")){
-            Document doc = new Document("type", type);
-            if (!GetDepts().contains(dept)){dept="ÎŞ";}
-            doc.append("dept",dept);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(oid)), "$set", doc).getModifiedCount();
-        }
-        return 0;
+    public static long SetUserByName(String username, Document doc){
+        return MongoUtil.updateOne(COLNAME, Filters.eq(USERNAME, username), "$set", doc).getModifiedCount();
     }
 
     /**
-     * ¸ù¾İÓÃ»§id¸üĞÂÓÃ»§ÃÜÂë¡¢ÀàĞÍÒÔ¼°ËùÊô²¿ÃÅ£¬admin³ıÍâ
-     * @param oid ÓÃ»§id
-     * @param password ÓÃ»§ÃÜÂë
-     * @param type ÓÃ»§ÀàĞÍ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
-     */
-    public static long SetUserById(String oid, String password, String type, String dept){
-        if (!MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(oid))).getString("username").equals("admin")){
-            Document doc = new Document("password", password).append("type", type);
-            if (!GetDepts().contains(dept)){dept="ÎŞ";}
-            doc.append("dept",dept);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("_id", new ObjectId(oid)), "$set", doc).getModifiedCount();
-        }
-        return 0;
-    }
-
-    /**
-     * ¸ù¾İÓÃ»§Ãû¸üĞÂÓÃ»§ÃÜÂë£¬admin³ıÍâ
-     * @param username ÓÃ»§Ãû
-     * @param password ÓÃ»§ÃÜÂë
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
-     */
-    public static long SetUserByName(String username, String password){
-        if (!username.equals("admin")){
-            Document doc = new Document("password", password);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("username", username), "$set", doc).getModifiedCount();
-        }
-        return 0;
-    }
-
-    /**
-     * ¸ù¾İÓÃ»§Ãû¸üĞÂÓÃ»§ÀàĞÍÒÔ¼°ËùÊô²¿ÃÅ£¬admin³ıÍâ
-     * @param username ÓÃ»§Ãû
-     * @param type ÓÃ»§ÀàĞÍ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
-     */
-    public static long SetUserByName(String username, String type, String dept){
-        if (!username.equals("admin")){
-            Document doc = new Document("type", type);
-            if (!GetDepts().contains(dept)){dept="ÎŞ";}
-            doc.append("dept",dept);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("username", username), "$set", doc).getModifiedCount();
-        }
-        return 0;
-    }
-
-    /**
-     * ¸ù¾İÓÃ»§Ãû¸üĞÂÓÃ»§ÃÜÂë¡¢ÀàĞÍÒÔ¼°ËùÊô²¿ÃÅ£¬admin³ıÍâ
-     * @param username ÓÃ»§Ãû
-     * @param password ÓÃ»§ÃÜÂë
-     * @param type ÓÃ»§ÀàĞÍ
-     * @param dept ²¿ÃÅÃû³Æ
-     * @return ±»³É¹¦ĞŞ¸ÄµÄÓÃ»§Êı£¬0»ò1
-     */
-    public static long SetUserByName(String username, String password, String type, String dept){
-        if (!username.equals("admin")){
-            Document doc = new Document("password", password).append("type", type);
-            if (!GetDepts().contains(dept)){dept="ÎŞ";}
-            doc.append("dept",dept);
-            return MongoUtil.updateOne(COLNAME, Filters.eq("username", username), "$set", doc).getModifiedCount();
-        }
-        return 0;
-    }
-
-    /**
-     * ¸ù¾İÓÃ»§Ãû²éÕÒ¸ÃÓÃ»§µÄÎÄµµĞÅÏ¢£¬admin³ıÍâ
-     * @param username ÓÃ»§Ãû
-     * @return ÓÃ»§µµ°¸
+     * æ ¹æ®ç”¨æˆ·åæŸ¥æ‰¾è¯¥ç”¨æˆ·çš„æ–‡æ¡£ä¿¡æ¯
+     * @param username ç”¨æˆ·å
+     * @return ç”¨æˆ·æ¡£æ¡ˆ
      */
     public static Document GetUserByName(String username){
-        if (!username.equals("admin")){
-            return MongoUtil.findOne(COLNAME, Filters.eq("username",username));
+        if (username==null) return null;
+        Document doc =  MongoUtil.findOne(COLNAME, Filters.eq(USERNAME,username));
+        if (doc!=null){
+            doc.put(LASTTIME, MongoUtil.FORMAT.format(doc.get(LASTTIME)));
+            doc.put("_id",doc.get("_id").toString());
         }
-        return null;
+        return doc;
     }
 
     /**
-     * ¸ù¾İÓÃ»§id²éÕÒ¸ÃÓÃ»§µÄÎÄµµĞÅÏ¢£¬admin³ıÍâ
-     * @param oid ÓÃ»§id
-     * @return ÓÃ»§µµ°¸
+     * æ ¹æ®ç”¨æˆ·idæŸ¥æ‰¾è¯¥ç”¨æˆ·çš„æ–‡æ¡£ä¿¡æ¯
+     * @param oid ç”¨æˆ·id
+     * @return ç”¨æˆ·æ¡£æ¡ˆ
      */
     public static Document GetUserById(String oid){
-        if (!MongoUtil.findOne(COLNAME, Filters.eq("_id",new ObjectId(oid))).getString("username").equals("admin")){
-            return MongoUtil.findOne(COLNAME, Filters.eq("_id", new ObjectId(oid)));
+        if (oid==null || !ObjectId.isValid(oid)) return null;
+        Document doc = MongoUtil.findOne(COLNAME, Filters.eq("_id", new ObjectId(oid)));
+        if (doc!=null){
+            doc.put(LASTTIME, MongoUtil.FORMAT.format(doc.get(LASTTIME)));
+            doc.put("_id",doc.get("_id").toString());
         }
-        return null;
+        return doc;
     }
 
     /**
-     * ÁĞ³öµ±Ç°¼¯ºÏÖĞµÄËùÓĞÓÃ»§£¬admin³ıÍâ
-     * @return ËùÓĞÓÃ»§µÄµµ°¸ĞÅÏ¢
+     * åˆ—å‡ºå½“å‰é›†åˆä¸­çš„æ‰€æœ‰ç”¨æˆ·
+     * @return æ‰€æœ‰ç”¨æˆ·çš„æ¡£æ¡ˆä¿¡æ¯
      */
-    public static MongoCursor<Document> ListUsers(){
-        return MongoUtil.find(COLNAME, Filters.ne("username", "admin"));
+    public static List<Document> ListUsers(Bson filter){
+        MongoCursor<Document> mcd = MongoUtil.find(COLNAME, filter);
+        List<Document> ldoc = new ArrayList<Document>();
+        while (mcd.hasNext()){
+            Document doc = mcd.next();
+            doc.put(LASTTIME, MongoUtil.FORMAT.format(doc.get(LASTTIME)));
+            doc.put("_id",doc.get("_id").toString());
+            ldoc.add(doc);
+        }
+        return ldoc;
     }
 
 }
